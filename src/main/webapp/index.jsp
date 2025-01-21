@@ -13,6 +13,44 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery library -->
 </head>
 <body>
+<%
+    String name = request.getParameter("name");
+    String email = request.getParameter("email");
+    String type = request.getParameter("type");
+    boolean isLoggedIn = email != null && type != null;
+    String login = request.getParameter("login");
+    String error = request.getParameter("error");
+    if (login != null) {
+
+%>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>Success!</strong> You have logged in successfully.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<%
+    }if (error != null) {
+%>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast show align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>Error!</strong> Login failed.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<%
+
+    }
+%>
+
 <nav class="navbar navbar-expand-lg bg-black ">
     <div class="container ">
         <a class="navbar-brand text-white" href="#">Computer Doctor</a>
@@ -38,17 +76,53 @@
                 </li>
 
             </ul>
-            <div class="ms-auto" >
+            <div class="ms-auto">
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light border border-0" type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button class="btn btn-outline-light border border-0" ><i class="fa-solid fa-cart-shopping"></i></button>
-                    <button class="btn btn-outline-light border border-0" id="show-login"><i class="fa-solid fa-user"></i></button>
+                    <button class="btn btn-outline-light border border-0" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="btn btn-outline-light border border-0">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                    <%
+                        if (isLoggedIn) {
+                    %>
+                    <button class="btn btn-outline-light border border-0" id="user-button">
+                        <i class="fa-solid fa-user"></i> <%= name %>
+                    </button>
+                    <%
+                    } else {
+                    %>
+                    <button class="btn btn-outline-light border border-0" id="show-login">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                    <%
+                        }
+                    %>
                 </form>
             </div>
         </div>
     </div>
 </nav>
+<%--user details--%>
+<div class="modal fade" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-end">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDetailsModalLabel">User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong> <span id="userName"><%= name %></span></p>
+                <p><strong>Email:</strong> <span id="userEmail"><%= email %></span></p>
+                <button class="btn btn-danger" id="logout-button">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Hero Section -->
 <section class="hero-section">
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -96,7 +170,7 @@
             <div class="col-6 col-sm-4 col-md-3">
                 <div class="product-bar-item text-center">
                     <a href="/pages/mother-boards-page.html" class="text-decoration-none text-white">
-                        <img src="/assests/images/motherBoard.jpg" alt="motherBoard" class="img-fluid rounded">
+                        <img src="assests/images/motherBoard.jpg" alt="motherBoard" class="img-fluid rounded">
                         <p class="mt-2 fw-bold">MOTHERBOARD</p>
                     </a>
                 </div>
@@ -136,7 +210,7 @@
             <div class="col-6 col-sm-4 col-md-3">
                 <div class="product-bar-item text-center">
                     <a href="#" class="text-decoration-none text-white">
-                        <img src="/assests/images/casing copy.jpg" alt="pc-case" class="img-fluid rounded">
+                        <img src="assests/images/casing%20copy.jpg" alt="pc-case" class="img-fluid rounded">
                         <p class="mt-2 fw-bold">PC CASE</p>
                     </a>
                 </div>

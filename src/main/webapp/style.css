@@ -21,6 +21,15 @@ background-color: black !important;
     width: 100%;
     height: auto;
 }
+.offcanvas-end {
+    max-width: 300px;
+    box-shadow: -3px 0px 15px rgba(0, 0, 0, 0.5);
+}
+.offcanvas-header, .offcanvas-body {
+    background-color: #343a40;
+    color: white;
+}
+
 @media (max-width: 768px) { /* Adjust as per your breakpoints */
   #product-bar {
     display: none; /* Hide product bar completely */
