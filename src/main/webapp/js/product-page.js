@@ -1,14 +1,14 @@
 $(document).ready(function () {
     console.log("ready");
 })
-$(document).ready(function () {
+/*$(document).ready(function () {
     const productBar = $("#product-bar");
 
     // Toggle product bar visibility
     $("#show-products").on("click", function (e) {
         e.preventDefault();
         if (productBar.css("top") === "35px") {
-            productBar.css("top", "-100%"); // Move up
+            productBar.css("top", "-100%");// Move up
         } else {
             productBar.css("top", "35px"); // Move down
         }
@@ -28,7 +28,7 @@ $(document).ready(function () {
     $("#product-bar .product-bar-item a").on("click", function () {
         productBar.css("top", "-100%"); // Move up
     });
-});
+});*/
 
 
 document.addEventListener("DOMContentLoaded", function () {

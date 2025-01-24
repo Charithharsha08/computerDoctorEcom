@@ -6,12 +6,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.ijse.computerdoctorecom.DTO.User;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,13 +38,12 @@ public class SignInServlet extends HttpServlet {
                 String type = resultSet.getString("type");
 
                 if (BCrypt.checkpw(password, storedPassword)) {
+
+                    User user = new User(name,email,password,type);
+                    req.getServletContext().setAttribute("user",user);
                         // Redirect with name, email, and encrypted password as parameters
                         String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-                        resp.sendRedirect("index.jsp?name=" + URLEncoder.encode(name, "UTF-8")
-                                + "&email=" + URLEncoder.encode(emailFromDB, "UTF-8")
-                                + "&password=" + URLEncoder.encode(encryptedPassword, "UTF-8")
-                                + "&type=" + URLEncoder.encode(type, "UTF-8")
-                                + "&login=Login Successful!");
+                        resp.sendRedirect("index.jsp?login=Login Successful!");
                 } else {
                     resp.sendRedirect("index.jsp?error=Login Failed!");
                 }

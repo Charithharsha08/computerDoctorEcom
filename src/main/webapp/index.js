@@ -1,19 +1,57 @@
 $(document).ready(function () {
     console.log("ready");
+    getCaegories();
 })
-document
-    .getElementById("show-products")
-    .addEventListener("click", function (e) {
-        e.preventDefault(); // Prevent default link behavior
-        const productBar = document.getElementById("product-bar");
+/*
+$(document).ready(function () {
+    const productBar = $("#product-bar");
 
-        // Check current state and toggle
-        if (productBar.style.top === "40px") {
-            productBar.style.top = "-100%"; // Hide the product bar
+    // Toggle product bar visibility
+    $("#show-products").on("click", function (e) {
+        e.preventDefault();
+        if (productBar.css("top") === "35px") {
+            productBar.css("top", "-100%"); // Move up
         } else {
-            productBar.style.top = "40px"; // Show the product bar
+            productBar.css("top", "35px"); // Move down
         }
     });
+
+    // Hide product bar when clicking outside
+    $(document).on("click", function (e) {
+        if (
+            !$(e.target).closest("#product-bar").length &&
+            !$(e.target).is("#show-products")
+        ) {
+            productBar.css("top", "-100%"); // Move up
+        }
+    });
+
+    // Hide product bar when clicking on a product inside it
+    $("#product-bar .product-bar-item a").on("click", function () {
+        productBar.css("top", "-100%"); // Move up
+    });
+});
+*/
+
+/*
+const getCaegories= () => {
+        $.ajax(
+            {
+                url: "getCategories",
+                method: "GET",
+                success: (data) => {
+                   data.forEach((category) => {
+                       $("#nav-category").append(`
+                       <li class="nav-item">
+                    <a class="nav-link text-white" href="product-page.jsp">$.{category.name}</a>
+                </li>
+                       `)
+                   })
+                }
+            }
+        )
+}
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
     const userButton = document.getElementById("user-button");
@@ -33,12 +71,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handle logout
     if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            // Perform logout operation
-            fetch("/logout", { method: "GET" }) // Adjust your servlet endpoint
-
+        logoutButton.addEventListener("click", function (e) {
+            console.log("Logout button clicked");
+            fetch("logout", { method: "GET" }) // Ensure the method is GET
                 .then(() => {
-                    window.location.reload(); // Reload page to update UI
+                    console.log("Successfully logged out");
+                    window.location.href = "index.jsp"; // Redirect to login page or home after logout
                 })
                 .catch((error) => console.error("Logout failed:", error));
         });
@@ -53,9 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const toastElement = document.querySelector('.toast');
     const toast = new bootstrap.Toast(toastElement);
     toast.show();
 });
+
