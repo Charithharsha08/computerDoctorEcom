@@ -1,12 +1,21 @@
 <%@ page import="lk.ijse.computerdoctorecom.DTO.User" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="lk.ijse.computerdoctorecom.DTO.Category" %>
+<%@ page import="java.util.List" %>
+<%@ page import="lk.ijse.computerdoctorecom.DTO.Product" %><%--
+  Created by IntelliJ IDEA.
+  User: charithharsha
+  Date: 2025-01-23
+  Time: 11:04 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Doctor</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mother Boards | Computer Doctor</title>
+    <link rel="stylesheet" href="css/product-page.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -15,14 +24,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <script src="code.jquery.com_jquery-3.7.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery library -->
 </head>
+<script src="code.jquery.com_jquery-3.7.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery library -->
+
+
 <body>
 <%
+    List<Product> productList = (List<Product>) request.getServletContext().getAttribute("productList");
     User user = null;
     try {
-         user = (User) request.getServletContext().getAttribute("user");
+        user = (User) request.getServletContext().getAttribute("user");
     } catch (Exception e) {
 %>
 <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -40,14 +52,14 @@
 <%
     }
     boolean isLoggedIn = false;
-    if (user !=null) {
-    String name = user.getName();
-    String password = user.getPassword();
-    String email = user.getEmail();
-    String type = user.getType();
-     isLoggedIn = email != null && type != null;
+    if (user != null) {
+        String name = user.getName();
+        String password = user.getPassword();
+        String email = user.getEmail();
+        String type = user.getType();
+        isLoggedIn = email != null && type != null;
 
-}
+    }
     String login = request.getParameter("login");
     String error = request.getParameter("error");
     if (login != null) {
@@ -93,14 +105,16 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse " id="navbarNav">
-            <ul class="navbar-nav ms-auto  " id="nav-category">
+            <ul class="navbar-nav ms-auto  ">
                 <li class="nav-item text-white ">
-                    <a class="nav-link active text-white" aria-current="page" href="get-product">Products</a>
+                    <a class="nav-link active text-white" aria-current="page" href="product-page.jsp">Products</a>
                 </li>
 
-            <button type="button" class="btn btn-none nav-link text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Add Category
+                <button type="button" class="btn btn-none nav-link text-white" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                    Add Product
                 </button>
+
             </ul>
             <div class="ms-auto">
                 <form class="d-flex">
@@ -145,13 +159,13 @@
             </div>
             <div class="modal-body">
                 <%
-                    if (user !=null){
+                    if (user != null) {
                 %>
                 <p><strong>Name:</strong> <span id="userName"><%= user.getName() %></span></p>
                 <p><strong>Email:</strong> <span id="userEmail"><%= user.getEmail() %></span></p>
                 <p><strong>Type:</strong> <span id="userPhone"><%= user.getType() %></span></p>
                 <%
-                }
+                    }
                 %>
                 <button class="btn btn-danger" id="logout-button">Logout</button>
             </div>
@@ -160,103 +174,178 @@
 </div>
 
 
-
-<!-- Hero Section -->
-<section class="hero-section">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="casing.jpg" class="d-block w-100" alt=" new arrival casing ">
+<!-- Main Content -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-md-3">
+            <h5>Filters</h5>
+            <div class="mb-4">
+                <h6>Price</h6>
+                <input type="range" class="form-range" min="0" max="1600000">
             </div>
-            <div class="carousel-item">
-                <img src="roggamingcase.jpg" class="d-block w-100" alt="rog-gaming-case">
+            <div class="mb-4">
+                <h6>Availability</h6>
+                <div>
+                    <input type="checkbox" id="inStock">
+                    <label for="inStock">In Stock</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="preOrder">
+                    <label for="preOrder">Pre Order</label>
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="keyboard.jpg" class="d-block w-100" alt="new arrival keyboard">
+            <div class="mb-4">
+                <h6>Brand</h6>
+                <div>
+                    <input type="checkbox" id="amd">
+                    <label for="amd">AMD</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="intel">
+                    <label for="intel">Intel</label>
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="liqwidcooler.jpg" class="d-block w-100" alt="new arrival liqwid cooler">
+            <div class="mb-4">
+                <h6>Generation</h6>
+                <div>
+                    <input type="checkbox" id="6thGen">
+                    <label for="6thGen">6th Gen</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="10thGen">
+                    <label for="10thGen">10th Gen</label>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h6>Cores</h6>
+                <div>
+                    <input type="checkbox" id="2cores">
+                    <label for="2cores">2 Cores</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="4cores">
+                    <label for="4cores">4 Cores</label>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h6>Threads</h6>
+                <div>
+                    <input type="checkbox" id="2threads">
+                    <label for="2threads">2 Threads</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="4threads">
+                    <label for="4threads">4 Threads</label>
+                </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</section>
-<section id="Laptop-video">
-    <video muted src="2022%20Nitro%205%20%20Gaming%20Laptop%20%20Acer%20-%20Acer%20(720p,%20h264).mp4"
-           class="object-fit-fill" autoplay></video>
-</section>
-<section class="Categories-link">
-    <div class="motherboard">
-        <a href="#"><img src="motherBoard%20new.png" class="img-fluid" alt="mother-boards-page"></a>
-    </div>
-    <div class="proccersor">
-        <a href="#"><img src="ryzen%20processor.png" class="img-fluid" alt="proccersor"></a>
-    </div>
-</section>
-<!-- Product Section -->
-<%--
 
+        <!-- Products Grid -->
+        <div class="col-md-9">
+            <div class="products">
+                <div class="container">
+
+                    <h1 class="lg-title">Products</h1>
+                    <%
+
+                        if (productList != null) {
+                    %>
+
+                    <div class="product-items">
+                        <!-- single product -->
+                        <%
+                            for (Product product : productList) {
+                        %>
+                        <div class="product">
+                            <div class="product-content">
+                                <div class="product-img">
+                                    <img src="<%= product.getProductImage() %>"
+                                         alt=<%= product.getProductName() %>>
+                                </div>
+                                <%
+                                    if (product.getProductQty() > 0) {
+                                %>
+                                <div class="product-btns">
+                                    <button type="button" class="btn-cart"> add to cart
+                                        <span><i class="fas fa-plus"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <%
+                            } else {
+                            %>
+                            <div class="product-btns">
+                                <button type="button" class="btn-cart" disabled> out of stock
+                                    <span><i class="fas fa-plus"></i></span>
+                                </button>
+                            </div>
+                            <%
+                                }
+                            %>
+
+                            <div class="product-info"
+                                 onclick="showDetails('asrock_b550m_pro_se_new_motherboard_b550_amd_pro56')">
+                                <div class="product-info-top">
+                                    <h2 class="sm-title"><%= product.getProductName() %>
+                                    </h2>
+                                    <div class="rating">
+                                        <span><i class="fas fa-star"></i></span>
+                                        <span><i class="fas fa-star"></i></span>
+                                        <span><i class="fas fa-star"></i></span>
+                                        <span><i class="fas fa-star"></i></span>
+                                        <span><i class="far fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <a href="" class="product-name"><%= product.getProductDescription() %>
+                                </a>
+                                <p class="product-price"><%=product.getProductPrice() + 5000%>
+                                </p>
+                                <p class="product-price"><%=product.getProductPrice()%>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- end of single product -->
+                        <%
+                                }
+                            }else {
+                                System.out.println("List is null");
+                            }
+                        %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--
 <!-- products-bar -->
 <div class="container-fluid my-4 bg-black bg-opacity-75" id="product-bar">
     <div class="container">
+        <%
+            if (categories == null) {
+                System.out.println("List is null");
+            }
+            if (categories != null) {
+                for (Category category : categories) {
+                    System.out.println(category.getName() + " " + category.getImage());
+        %>
+        <h1 class="lg-title"><%= category.getName() + " " +
+                category.getImage()%>
+        </h1>
         <div class="row g-4 ">
             <div class="col-6 col-sm-4 col-md-3">
                 <div class="product-bar-item text-center">
                     <a href="product-page.jsp" class="text-decoration-none text-white">
-                        <img src="assests/images/motherBoard.jpg" alt="motherBoard" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">MOTHERBOARD</p>
+                        <img src="<%= category.getImage() %>" alt="<%= category.getName() %>" class="img-fluid rounded">
+                        <p class="mt-2 fw-bold"><%= category.getName() %>
+                        </p>
                     </a>
                 </div>
             </div>
-            <div class="col-6 col-sm-4 col-md-3">
-                <div class="product-bar-item text-center">
-                    <a href="#" class="text-decoration-none text-white">
-                        <img src="assests/images/ram.jpg" alt="ram" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">MEMORY</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-3">
-                <div class="product-bar-item text-center">
-                    <a href="#" class="text-decoration-none text-white">
-                        <img src="assests/images/ssd.jpg" alt="SSD" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">SSD</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-3">
-                <div class="product-bar-item text-center">
-                    <a href="#" class="text-decoration-none text-white">
-                        <img src="assests/images/pws.jpg" alt="power-supply" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">POWER SUPPLY</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-3">
-                <div class="product-bar-item text-center">
-                    <a href="#" class="text-decoration-none text-white">
-                        <img src="assests/images/gpu.jpg" alt="graphics-card" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">GRAPHICS CARD</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-3">
-                <div class="product-bar-item text-center">
-                    <a href="#" class="text-decoration-none text-white">
-                        <img src="assests/images/casing%20copy.jpg" alt="pc-case" class="img-fluid rounded">
-                        <p class="mt-2 fw-bold">PC CASE</p>
-                    </a>
-                </div>
-            </div>
+            <% }
+            } %>
             <div class="col-6 col-sm-4 col-md-3">
                 <div class="product-bar-item text-center">
                     <!-- Button trigger modal -->
@@ -270,26 +359,24 @@
     </div>
 </div>
 
-
---%>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">ADD CATEGORY</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="category" enctype="multipart/form-data" method="post">
                     <div class="input-field">
-                    <input type="text" class="form-control " id="categoryName" name="categoryName"
-                           placeholder="Category Name" required>
+                        <input type="text" class="form-control " id="categoryName" name="categoryName"
+                               placeholder="Category Name" required>
                     </div>
                     <div class="input-field">
-                    <input type="file" class="form-control " id="categoryImage" name="categoryImage"
-                           placeholder="Category Image" required>
+                        <input type="file" class="form-control " id="categoryImage" name="categoryImage"
+                               placeholder="Category Image" required>
                     </div>
                     <input type="submit" class="btn btn-dark " value="Save">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -299,8 +386,63 @@
         </div>
     </div>
 </div>
+--%>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row g-3" action="add-product" enctype="multipart/form-data" method="post">
+                    <div class="col-md-6">
+                        <label for="productId" class="form-label">Product ID</label>
+                        <input type="email" disabled class="form-control" id="productId" name="productId"
+                               placeholder="Auto Generated">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName">
+                    </div>
+                    <div class="col-12">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="number" class="form-control" id="price" name="price" placeholder="Ex: 1000">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="qty" class="form-label">Qty</label>
+                        <input type="number" class="form-control" name="qty" id="qty">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" class="form-select" name="category">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="productImage" class="form-label">Upload Image</label>
+                        <input type="file" class="form-control" id="productImage" name="productImage">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-dark">Add Product</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<!-- Footer -->
 <footer style="background-color: #111; color: #fff; padding: 40px 20px;">
     <div class="container">
         <div class="row">
@@ -366,8 +508,7 @@
         </div>
     </div>
 </footer>
-
-<script src="index.js"></script>
+<script src="js/product-page.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
