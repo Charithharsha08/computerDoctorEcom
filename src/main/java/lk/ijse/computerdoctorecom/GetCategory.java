@@ -34,7 +34,7 @@ public class GetCategory extends HttpServlet {
                categoryList.add(new Category(name,image));
                System.out.println(name+" "+image);
            }
-           req.setAttribute("categoryCard", categoryList);
+           req.getServletContext().setAttribute("categoryCard", categoryList);
            System.out.println( categoryList);
            connection.close();
        } catch (Exception e) {

@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -25,49 +24,52 @@ import java.sql.SQLException;
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 
-@WebServlet(name = "addCategory",value = "/category")
-public class AddCategory extends HttpServlet {
+@WebServlet(name = "AddProduct", value = "/add-product")
+public class AddProduct extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     private DataSource dataSource;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("add product Called");
         try {
-            String name = req.getParameter("categoryName");
+            String name = req.getParameter("productName");
             System.out.println(name);
+            String description = req.getParameter("description");
+            int qty = Integer.parseInt(req.getParameter("qty"));
+            double price = Double.parseDouble(req.getParameter("price"));
+            String category = req.getParameter("category");
+            System.out.println(name + " " + description + " " + qty + " " + price + " " );
 
-            Part filePart = req.getPart("categoryImage");
-            String imageFileName = filePart.getSubmittedFileName();
+            Part filepart = req.getPart("productImage");
+            String imageFileName = filepart.getSubmittedFileName();
 
-
-            String uploadDir = "/Users/charithharsha/Documents/projects /advance API development/computerDoctorEcom/src/main/webapp/assets/images/category";
-
+            String uploadDir = "/Users/charithharsha/Documents/projects /advance API development/computerDoctorEcom/src/main/webapp/assets/images/products";
             File imageFile = new File(uploadDir + File.separator + imageFileName);
 
-            String location = "assets/images/category/" + imageFileName;
+            String location = "assets/images/products/" + imageFileName;
 
-            try
-                    (InputStream inputStream = filePart.getInputStream()) {
+            try (InputStream inputStream = filepart.getInputStream()){
                 Files.copy(inputStream, imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT into category  (name,image) values (?,?)");
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,location);
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products (product_name,product_image,product_description,product_qty,product_price) VALUES (?,?,?,?,?)");
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, location);
+            preparedStatement.setString(3, description);
+            preparedStatement.setInt(4, qty);
+            preparedStatement.setDouble(5, price);
             int i = preparedStatement.executeUpdate();
             connection.close();
             if (i > 0) {
-                resp.sendRedirect("index.jsp?message=Category created successfully");
-            } else {
-                resp.sendRedirect("index.jsp?error=Category creation failed");
+                resp.sendRedirect("product-page.jsp?message=product Save Success");
+                System.out.println("Product saved");
             }
-
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 }
+
 /*
 
 @Override

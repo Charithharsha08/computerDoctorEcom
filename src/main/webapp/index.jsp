@@ -95,7 +95,7 @@
         <div class="collapse navbar-collapse " id="navbarNav">
             <ul class="navbar-nav ms-auto  " id="nav-category">
                 <li class="nav-item text-white ">
-                    <a class="nav-link active text-white" aria-current="page" href="product-page.jsp">Products</a>
+                    <a class="nav-link active text-white" aria-current="page" href="get-product">Products</a>
                 </li>
 
             <button type="button" class="btn btn-none nav-link text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -278,7 +278,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">ADD CATEGORY</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

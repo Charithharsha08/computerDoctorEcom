@@ -1,6 +1,7 @@
 <%@ page import="lk.ijse.computerdoctorecom.DTO.User" %>
 <%@ page import="lk.ijse.computerdoctorecom.DTO.Category" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="lk.ijse.computerdoctorecom.DTO.Product" %><%--
   Created by IntelliJ IDEA.
   User: charithharsha
   Date: 2025-01-23
@@ -30,7 +31,7 @@
 
 <body>
 <%
-    List<Category> categories = (List<Category>) request.getAttribute("categoryCard");
+    List<Product> productList = (List<Product>) request.getServletContext().getAttribute("productList");
     User user = null;
     try {
         user = (User) request.getServletContext().getAttribute("user");
@@ -109,9 +110,11 @@
                     <a class="nav-link active text-white" aria-current="page" href="product-page.jsp">Products</a>
                 </li>
 
-                <button type="button" class="btn btn-none nav-link text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Add Category
+                <button type="button" class="btn btn-none nav-link text-white" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                    Add Product
                 </button>
+
             </ul>
             <div class="ms-auto">
                 <form class="d-flex">
@@ -243,31 +246,49 @@
             <div class="products">
                 <div class="container">
 
-                    <h1 class="lg-title">motherboards</h1>
-                    <!-- <p class = "text-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur quos sit consectetur, ipsa voluptatem vitae necessitatibus dicta veniam, optio, possimus assumenda laudantium. Temporibus, quis cum.</p> -->
+                    <h1 class="lg-title">Products</h1>
+                    <%
+
+                        if (productList != null) {
+                    %>
 
                     <div class="product-items">
                         <!-- single product -->
+                        <%
+                            for (Product product : productList) {
+                        %>
                         <div class="product">
                             <div class="product-content">
                                 <div class="product-img">
-                                    <img src="/assests/images/products/asrock_b550m_pro_se_new_motherboard_b550_amd_pro56/main_images/1.jpg"
-                                         alt="asrock_b550m_pro_se_new_motherboard_b550_amd_pro56">
+                                    <img src="<%= product.getProductImage() %>"
+                                         alt=<%= product.getProductName() %>>
                                 </div>
+                                <%
+                                    if (product.getProductQty() > 0) {
+                                %>
                                 <div class="product-btns">
                                     <button type="button" class="btn-cart"> add to cart
                                         <span><i class="fas fa-plus"></i></span>
                                     </button>
-                                    <button type="button" class="btn-buy"> buy now
-                                        <span><i class="fas fa-shopping-cart"></i></span>
-                                    </button>
                                 </div>
                             </div>
+                            <%
+                            } else {
+                            %>
+                            <div class="product-btns">
+                                <button type="button" class="btn-cart" disabled> out of stock
+                                    <span><i class="fas fa-plus"></i></span>
+                                </button>
+                            </div>
+                            <%
+                                }
+                            %>
 
                             <div class="product-info"
                                  onclick="showDetails('asrock_b550m_pro_se_new_motherboard_b550_amd_pro56')">
                                 <div class="product-info-top">
-                                    <h2 class="sm-title">motherBoard</h2>
+                                    <h2 class="sm-title"><%= product.getProductName() %>
+                                    </h2>
                                     <div class="rating">
                                         <span><i class="fas fa-star"></i></span>
                                         <span><i class="fas fa-star"></i></span>
@@ -276,104 +297,21 @@
                                         <span><i class="far fa-star"></i></span>
                                     </div>
                                 </div>
-                                <a href="#" class="product-name">Asrock B550M Pro SE New Motherboard B550 AMD PRO565
-                                    Socket AM4 DDR4 128GB PCI-E 4.0 M.2 SATA III 4733+(OC)MHz USB 3.2
+                                <a href="" class="product-name"><%= product.getProductDescription() %>
                                 </a>
-                                <p class="product-price">Rs. 60,500.00
+                                <p class="product-price"><%=product.getProductPrice() + 5000%>
                                 </p>
-                                <p class="product-price">Rs. 57,500.00
+                                <p class="product-price"><%=product.getProductPrice()%>
                                 </p>
                             </div>
-
-                            <div class="off-info">
-                                <h2 class="sm-title">25% off</h2>
-                            </div>
                         </div>
                         <!-- end of single product -->
-                        <!-- single product -->
-                        <div class="product">
-                            <div class="product-content">
-                                <div class="product-img">
-                                    <img src="/assests/images/products/gigabyte_new_b650m_aorus_elite_ax_ice_micro_atx_am/main_images/1.jpg"
-                                         alt="gigabyte_new_b650m_aorus_elite_ax_ice_micro_atx_am">
-                                </div>
-                                <div class="product-btns">
-                                    <button type="button" class="btn-cart"> add to cart
-                                        <span><i class="fas fa-plus"></i></span>
-                                    </button>
-                                    <button type="button" class="btn-buy"> buy now
-                                        <span><i class="fas fa-shopping-cart"></i></span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="product-info"
-                                 onclick="showDetails('gigabyte_new_b650m_aorus_elite_ax_ice_micro_atx_am')">
-                                <div class="product-info-top">
-                                    <h2 class="sm-title">motherBoard</h2>
-                                    <div class="rating">
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="far fa-star"></i></span>
-                                    </div>
-                                </div>
-                                <a href="#" class="product-name">GIGABYTE New B650M AORUS ELITE AX ICE Micro-ATX AMD
-                                    B650 DDR5 192GB DDR5 8000 (OC) MHz M.2 Wi-Fi 6E Socket AM5
-
-                                </a>
-                                <p class="product-price">$ 150.00</p>
-                                <p class="product-price">$ 133.00</p>
-                            </div>
-
-                            <div class="off-info">
-                                <h2 class="sm-title">25% off</h2>
-                            </div>
-                        </div>
-                        <!-- end of single product -->
-                        <!-- single product -->
-                        <div class="product">
-                            <div class="product-content">
-                                <div class="product-img">
-                                    <img src="/assests/images/products/gigabyte_new_b550m_aorus_elite_motherboard_micro_a/main_images/1.jpg"
-                                         alt="gigabyte_new_b550m_aorus_elite_motherboard_micro_a">
-                                </div>
-                                <div class="product-btns">
-                                    <button type="button" class="btn-cart"> add to cart
-                                        <span><i class="fas fa-plus"></i></span>
-                                    </button>
-                                    <button type="button" class="btn-buy"> buy now
-                                        <span><i class="fas fa-shopping-cart"></i></span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="product-info"
-                                 onclick="showDetails('gigabyte_new_b550m_aorus_elite_motherboard_micro_a')">
-                                <div class="product-info-top">
-                                    <h2 class="sm-title">motherBoard</h2>
-                                    <div class="rating">
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="fas fa-star"></i></span>
-                                        <span><i class="far fa-star"></i></span>
-                                    </div>
-                                </div>
-                                <a href="#" class="product-name">GIGABYTE New B550M AORUS ELITE Motherboard Micro-ATX
-                                    Socket AM4 For Ryzen 5000 4000 3000 Series
-
-                                </a>
-                                <p class="product-price">$ 150.00</p>
-                                <p class="product-price">$ 133.00</p>
-                            </div>
-
-                            <div class="off-info">
-                                <h2 class="sm-title">25% off</h2>
-                            </div>
-                        </div>
-                        <!-- end of single product -->
+                        <%
+                                }
+                            }else {
+                                System.out.println("List is null");
+                            }
+                        %>
                     </div>
                 </div>
             </div>
@@ -455,23 +393,49 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Product</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="category" enctype="multipart/form-data" method="post">
-                    <div class="input-field">
-                        <input type="text" class="form-control " id="categoryName" name="categoryName"
-                               placeholder="Category Name" required>
-                    </div>
-                    <div class="input-field">
-                        <input type="file" class="form-control " id="categoryImage" name="categoryImage"
-                               placeholder="Category Image" required>
-                    </div>
-                    <input type="submit" class="btn btn-dark " value="Save">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
+                <form class="row g-3" action="add-product" enctype="multipart/form-data" method="post">
+                    <div class="col-md-6">
+                        <label for="productId" class="form-label">Product ID</label>
+                        <input type="email" disabled class="form-control" id="productId" name="productId"
+                               placeholder="Auto Generated">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName">
+                    </div>
+                    <div class="col-12">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="number" class="form-control" id="price" name="price" placeholder="Ex: 1000">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="qty" class="form-label">Qty</label>
+                        <input type="number" class="form-control" name="qty" id="qty">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" class="form-select" name="category">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="productImage" class="form-label">Upload Image</label>
+                        <input type="file" class="form-control" id="productImage" name="productImage">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-dark">Add Product</button>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>
